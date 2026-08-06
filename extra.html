@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小黑屋 · The Dark Room — 王占黑</title>
+<meta name="description" content="日常摄影、活动通知与留言板。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="lang-en">
+<div class="wrap">
+
+  <header class="site-header">
+    <h2 class="site-name"><a href="index.html"><span class="zh">王占黑</span><span class="en">Wang Zhanhei</span></a></h2>
+    <button class="lang-toggle" type="button" aria-label="切换到中文">中</button>
+  </header>
+
+  <div class="ripple" aria-hidden="true">
+    <svg viewBox="0 0 400 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,7 C25,0 75,14 100,7 S175,0 200,7 S275,14 300,7 S375,0 400,7 M400,7 C425,0 475,14 500,7 S575,0 600,7 S675,14 700,7 S775,0 800,7" fill="none" stroke="currentColor" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <nav class="main-nav">
+    <a href="index.html"><span class="zh">关于</span><span class="en">About</span></a>
+    <a href="works.html"><span class="zh">作品</span><span class="en">Works</span></a>
+    <a href="books.html"><span class="zh">文集</span><span class="en">Books</span></a>
+    <a href="contact.html"><span class="zh">联系</span><span class="en">Contact</span></a>
+    <a href="extra.html" class="active"><span class="zh">小黑屋</span><span class="en">The Dark Room</span></a>
+  </nav>
+
+  <main>
+    <h1><span class="zh">小黑屋</span><span class="en">The Dark Room</span></h1>
+    <p class="lede">
+      <span class="zh">不属于小说的角落——日常摄影、活动通知，以及一块留言板。</span>
+      <span class="en">The corner that isn't fiction — everyday photography, event notices, and a place to leave a note.</span>
+    </p>
+
+    <div class="dr-block">
+      <p class="section-title"><span class="zh">日常摄影</span><span class="en">Everyday Photography</span></p>
+      <div class="dr-photo-grid">
+        <div class="ph"></div>
+        <div class="ph"></div>
+        <div class="ph"></div>
+        <div class="ph"></div>
+      </div>
+    </div>
+
+    <div class="dr-block">
+      <p class="section-title"><span class="zh">活动通知</span><span class="en">Events</span></p>
+      <ul class="entry-list">
+        <li class="entry">
+          <div class="entry-head">
+            <span class="entry-title"></span>
+            <span class="entry-meta"></span>
+          </div>
+          <p class="entry-desc"></p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="dr-block">
+      <p class="section-title"><span class="zh">留言板</span><span class="en">Guestbook</span></p>
+      <p class="lede">
+        <span class="zh">写点什么都可以——读后感、路过打个招呼、或者只是想说一句话。</span>
+        <span class="en">Leave anything — a note on something you read, a passing hello, or just a word.</span>
+      </p>
+
+      <form name="guestbook" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="guestbook-form" class="gb-form">
+        <input type="hidden" name="form-name" value="guestbook" />
+        <p class="gb-hidden"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+        <div class="gb-field">
+          <label for="gb-message"><span class="zh">留言</span><span class="en">Message</span></label>
+          <textarea id="gb-message" name="message" required maxlength="1000"></textarea>
+        </div>
+
+        <button type="submit" class="gb-submit">
+          <span class="zh">发送</span><span class="en">Send</span>
+        </button>
+
+        <p class="gb-status" id="gb-status" role="status"></p>
+      </form>
+
+      <p class="gb-hint">
+        <span class="zh">放心，留言只有我会看到。</span>
+        <span class="en">Messages come directly to me and aren't displayed publicly on this page for now.</span>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <span class="zh">© 2026 王占黑</span>
+    <span class="en">© 2026 Wang Zhanhei</span>
+  </footer>
+
+</div>
+<script src="script.js"></script>
+<script>
+(function () {
+  var form = document.getElementById('guestbook-form');
+  if (!form) return;
+  var status = document.getElementById('gb-status');
+  var isZh = function () { return document.body.classList.contains('lang-zh'); };
+
+  function encode(data) {
+    return Object.keys(data).map(function (k) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
+    }).join('&');
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var submitBtn = form.querySelector('.gb-submit');
+    var formData = {};
+    new FormData(form).forEach(function (value, key) { formData[key] = value; });
+
+    submitBtn.disabled = true;
+    status.className = 'gb-status show';
+    status.textContent = isZh() ? '发送中…' : 'Sending…';
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: encode(formData)
+    }).then(function (res) {
+      if (!res.ok) throw new Error('Network response was not ok');
+      form.reset();
+      form.style.display = 'none';
+      status.className = 'gb-status show';
+      status.textContent = isZh() ? '收到啦，谢谢你的留言！' : 'Got it — thank you for writing!';
+    }).catch(function () {
+      submitBtn.disabled = false;
+      status.className = 'gb-status show error';
+      status.textContent = isZh()
+        ? '发送失败，请稍后再试，或直接发邮件到联系页的邮箱。'
+        : 'Something went wrong — please try again later, or email via the Contact page.';
+    });
+  });
+})();
+</script>
+</body>
+</html>

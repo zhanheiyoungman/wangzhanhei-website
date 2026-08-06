@@ -1,0 +1,379 @@
+/* ============================================================
+   清水 — personal writer site
+   Palette: paper #F7F5EF · ink #21201C · celadon #5C7A6E
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;1,400&family=Noto+Serif+SC:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;1,400&family=Inter:wght@400;500&display=swap');
+
+:root {
+  --paper: #F7F5EF;
+  --paper-deep: #EFEBE0;
+  --ink: #21201C;
+  --ink-soft: #4A4740;
+  --stone: #8B8579;
+  --rule: #DDD7C8;
+  --celadon: #5C7A6E;
+  --celadon-deep: #46594F;
+
+  --serif-zh: 'Noto Serif SC', serif;
+  --serif-en: 'Source Serif 4', serif;
+  --display-zh: 'Noto Serif SC', serif;
+  --display-en: 'Newsreader', serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif-zh);
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body :lang(en), body .en-text { font-family: var(--serif-en); }
+
+::selection { background: var(--celadon); color: var(--paper); }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---------- language toggle logic ---------- */
+.zh, .en { }
+body.lang-zh .en { display: none; }
+body.lang-en .zh { display: none; }
+body.lang-en { font-family: var(--serif-en); }
+
+/* ---------- layout shell ---------- */
+.wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 5rem 1.75rem 6rem;
+}
+
+/* ---------- header ---------- */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3.25rem;
+  gap: 1rem;
+}
+
+.site-name {
+  font-family: var(--display-zh);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+body.lang-en .site-name { font-family: var(--display-en); font-weight: 500; font-style: italic; }
+
+.site-name a { display: inline-block; }
+
+.lang-toggle {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--stone);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 0.32rem 0.85rem;
+  cursor: pointer;
+  background: transparent;
+  white-space: nowrap;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.lang-toggle:hover { border-color: var(--celadon); color: var(--celadon-deep); }
+.lang-toggle:focus-visible { outline: 2px solid var(--celadon); outline-offset: 2px; }
+
+/* ---------- ripple divider — the signature element ---------- */
+.ripple {
+  width: 100%;
+  height: 14px;
+  margin: 0 0 3rem;
+  overflow: hidden;
+  color: var(--rule);
+}
+.ripple svg { display: block; width: 200%; height: 14px; animation: ripple-drift 16s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .ripple svg { animation: none; } }
+@keyframes ripple-drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ---------- nav ---------- */
+nav.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+  margin-bottom: 3.5rem;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+}
+nav.main-nav a {
+  color: var(--ink-soft);
+  padding-bottom: 3px;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+nav.main-nav a:hover,
+nav.main-nav a:focus-visible { color: var(--celadon-deep); border-bottom-color: var(--celadon); }
+nav.main-nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+/* ---------- typography ---------- */
+h1 {
+  font-family: var(--display-zh);
+  font-size: 1.9rem;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0 0 1.75rem;
+}
+body.lang-en h1 { font-family: var(--display-en); font-weight: 500; font-style: italic; }
+
+p { margin: 0 0 1.4rem; font-size: 1.02rem; color: var(--ink); }
+p.lede { color: var(--ink-soft); }
+
+.section-title {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin: 3rem 0 1.4rem;
+}
+.section-title:first-of-type { margin-top: 0; }
+
+/* ---------- works / essays list ---------- */
+.entry-list { list-style: none; margin: 0; padding: 0; }
+.entry {
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--rule);
+}
+.entry:last-child { padding-bottom: 0; }
+.entry-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.entry-title {
+  font-family: var(--display-zh);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+body.lang-en .entry-title { font-family: var(--display-en); font-weight: 500; font-style: italic; }
+.entry-title a:hover, .entry-title a:focus-visible { color: var(--celadon-deep); }
+.entry-meta {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--stone);
+  white-space: nowrap;
+}
+.entry-desc { margin-top: 0.5rem; color: var(--ink-soft); font-size: 0.97rem; }
+
+/* ---------- about: headshot ---------- */
+.headshot-wrap {
+  margin: 0 0 2.5rem;
+}
+.headshot-wrap img {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  display: block;
+  border-radius: 2px;
+}
+.photo-credit {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--stone);
+  margin-top: 0.5rem;
+}
+
+/* ---------- books grid (文集) — uniform cover size, aligned text ---------- */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 2.25rem 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: stretch;
+}
+.book-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.book-cover {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: var(--paper-deep);
+}
+.book-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.book-title {
+  font-family: var(--display-zh);
+  font-weight: 600;
+  font-size: 0.98rem;
+  line-height: 1.4;
+  margin-top: 0.85rem;
+  min-height: 2.75rem;
+}
+body.lang-en .book-title { font-family: var(--display-en); font-weight: 500; font-style: italic; }
+.book-meta {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  color: var(--stone);
+  margin-top: auto;
+  padding-top: 0.5rem;
+  line-height: 1.5;
+}
+
+/* ---------- dark room (小黑屋) ---------- */
+.dr-block {
+  margin-bottom: 2.75rem;
+  padding-bottom: 2.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+.dr-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.dr-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.85rem;
+}
+.dr-photo-grid .ph {
+  aspect-ratio: 4 / 5;
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  color: var(--stone);
+  text-align: center;
+  padding: 0.5rem;
+}
+.guestbook-note {
+  border: 1px solid var(--rule);
+  padding: 1.5rem;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--stone);
+  text-align: center;
+}
+
+/* ---------- guestbook form ---------- */
+.gb-form { display: flex; flex-direction: column; gap: 1.25rem; max-width: 480px; }
+.gb-field { display: flex; flex-direction: column; gap: 0.4rem; }
+.gb-field label {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+.gb-field input,
+.gb-field textarea {
+  font-family: var(--serif-zh);
+  font-size: 0.98rem;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  padding: 0.5rem 0.1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+  resize: vertical;
+}
+body.lang-en .gb-field input,
+body.lang-en .gb-field textarea { font-family: var(--serif-en); }
+.gb-field input:focus,
+.gb-field textarea:focus { border-color: var(--celadon); }
+.gb-field textarea { min-height: 6rem; }
+.gb-submit {
+  align-self: flex-start;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.5rem 1.4rem;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.gb-submit:hover { background: var(--celadon); border-color: var(--celadon); color: var(--paper); }
+.gb-submit:disabled { opacity: 0.5; cursor: default; }
+.gb-status {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: var(--celadon-deep);
+  display: none;
+}
+.gb-status.show { display: block; }
+.gb-status.error { color: #a3453b; }
+.gb-hidden { position: absolute; left: -9999px; top: -9999px; }
+.gb-hint {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  color: var(--stone);
+  margin-top: 0.75rem;
+}
+
+/* ---------- contact ---------- */
+.contact-list { list-style: none; margin: 0; padding: 0; }
+.contact-list li {
+  padding: 1rem 0;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.contact-list li:last-child { border-bottom: 1px solid var(--rule); }
+.contact-label {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--stone);
+  text-transform: uppercase;
+}
+.contact-value a { border-bottom: 1px solid var(--rule); transition: border-color 0.2s ease, color 0.2s ease; }
+.contact-value a:hover, .contact-value a:focus-visible { color: var(--celadon-deep); border-color: var(--celadon); }
+
+/* ---------- footer ---------- */
+footer.site-footer {
+  margin-top: 5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--stone);
+}
+
+/* ---------- focus ---------- */
+a:focus-visible { outline: 2px solid var(--celadon); outline-offset: 2px; border-radius: 2px; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 540px) {
+  .wrap { padding: 3.25rem 1.25rem 4rem; }
+  .site-header { flex-direction: row; align-items: center; }
+  h1 { font-size: 1.6rem; }
+}
